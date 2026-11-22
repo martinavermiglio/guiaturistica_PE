@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "shared_data.h"
 #include "audio_ui.h"
-// #include "telemetria.h" // <-- Descomentar al hacer merge con Persona 2
+#include "telemetria.h" // <-- Descomentado para integrar Persona 2
 
 // Credenciales Wi-Fi
 const char* WIFI_SSID = "TU_SSID";
@@ -37,9 +37,6 @@ void setup() {
     initWiFi(WIFI_SSID, WIFI_PASS);
     initAudio();
 
-    // Inicialización Persona 2 (Núcleo 0) -> Descomentar tras merge
-    // initSensors();
-
     // Lanzar tarea de Persona 1 en Núcleo 1 (Pila amplia de 8192 bytes para decodificador MP3)
     xTaskCreatePinnedToCore(
         TaskAudioDisplay,
@@ -51,8 +48,7 @@ void setup() {
         1
     );
 
-    // Lanzar tarea de Persona 2 en Núcleo 0 -> Descomentar tras merge
-    /*
+    // Lanzar tarea de Persona 2 en Núcleo 0 (initGPS, initMicrofono, etc. se ejecutan dentro)
     xTaskCreatePinnedToCore(
         TaskSensors,
         "TaskSensors",
@@ -62,7 +58,6 @@ void setup() {
         &TaskSensorsHandle,
         0
     );
-    */
 }
 
 void loop() {
